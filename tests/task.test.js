@@ -17,6 +17,7 @@ test('Should create task for user', async () => {
     .post('/tasks')
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
     .send({
+      summary: 'test',
       description: 'From my test',
     })
     .expect(201);
@@ -32,6 +33,7 @@ test('Should not create task with invalid description/completed', async () => {
     .post('/tasks')
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
     .send({
+      summary: 'bad',
       description: {
         title: 'task',
       },
