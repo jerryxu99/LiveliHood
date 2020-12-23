@@ -20,15 +20,15 @@ router.post('/tasks', auth, async (req, res) => {
 });
 
 // read all tasks
-// GET /tasks?completed=false
+// GET /tasks?status=OPEN
 // GET /tasks?limit=10&skip=10
 // GET /tasks?sortBy=createdAt_desc
 router.get('/tasks', async (req, res) => {
   const match = {};
   const sort = {};
 
-  if (req.query.completed) {
-    match.completed = req.query.completed === 'true';
+  if (req.query.status) {
+    match.status = req.query.status;
   }
 
   if (req.query.sortBy) {
@@ -48,16 +48,16 @@ router.get('/tasks', async (req, res) => {
   }
 });
 
-// read your tasks
-// GET /tasks/me?completed=false
+// read your tasks that you put up
+// GET /tasks/me?status=IN+PROGRESS
 // GET /tasks/me?limit=10&skip=10
 // GET /tasks/me?sortBy=createdAt_desc
 router.get('/tasks/me', auth, async (req, res) => {
   const match = {};
   const sort = {};
 
-  if (req.query.completed) {
-    match.completed = req.query.completed === 'true';
+  if (req.query.status) {
+    match.status = req.query.status;
   }
 
   if (req.query.sortBy) {
@@ -98,7 +98,7 @@ router.get('/tasks/:id', async (req, res) => {
 
 // update your tasks
 router.patch('/tasks/:id', auth, async (req, res) => {
-  const allowedUpdates = ['summary', 'description', 'completed'];
+  const allowedUpdates = ['title', 'description', 'status'];
   const updates = Object.keys(req.body);
   const isValid = updates.every((update) => allowedUpdates.includes(update));
 

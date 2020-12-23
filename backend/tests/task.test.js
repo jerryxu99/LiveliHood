@@ -17,15 +17,19 @@ test('Should create task for user', async () => {
     .post('/tasks')
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
     .send({
-      summary: 'test',
+      title: 'test',
       description: 'From my test',
+      location: {
+        lat: 59.22,
+        lng: 80,
+      },
     })
     .expect(201);
 
   const task = await Task.findById(response.body._id);
   expect(task).not.toBeNull();
 
-  expect(task.completed).toEqual(false);
+  expect(task.status).toEqual('OPEN');
 });
 
 test('Should not create task with invalid description/completed', async () => {
@@ -33,9 +37,13 @@ test('Should not create task with invalid description/completed', async () => {
     .post('/tasks')
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
     .send({
-      summary: 'bad',
+      title: 'bad',
       description: {
         title: 'task',
+      },
+      location: {
+        lat: 59.22,
+        lng: 80,
       },
     })
     .expect(400);
@@ -53,7 +61,7 @@ test('Should get tasks for user', async () => {
 
 test('Should fetch only completed tasks', async () => {
   const response = await request(app)
-    .get('/tasks/me?completed=true')
+    .get('/tasks/me?status=DONE')
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
     .send()
     .expect(200);
@@ -63,7 +71,7 @@ test('Should fetch only completed tasks', async () => {
 
 test('Should fetch only incomplete tasks', async () => {
   const response = await request(app)
-    .get('/tasks/me?completed=false')
+    .get('/tasks/me?status=OPEN')
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
     .send()
     .expect(200);
@@ -129,7 +137,7 @@ test('Should not update other users task', async () => {
     .patch(`/tasks/${taskThree._id}`)
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
     .send({
-      completed: false,
+      status: 'OPEN',
     })
     .expect(404);
 });

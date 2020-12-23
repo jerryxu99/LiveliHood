@@ -34,26 +34,38 @@ const userTwo = {
 
 const taskOne = new Task({
   _id: new mongoose.Types.ObjectId(),
-  summary: '1',
+  title: '1',
   description: 'First task',
-  completed: false,
+  status: 'OPEN',
   owner: userOneId,
+  location: {
+    lat: 59,
+    lng: -80,
+  },
 });
 
 const taskTwo = new Task({
   _id: new mongoose.Types.ObjectId(),
-  summary: '2',
+  title: '2',
   description: 'Second task',
-  completed: true,
+  status: 'DONE',
   owner: userOneId,
+  location: {
+    lat: 120,
+    lng: -80,
+  },
 });
 
 const taskThree = new Task({
   _id: new mongoose.Types.ObjectId(),
-  summary: '3',
+  title: '3',
   description: 'Third task',
-  completed: true,
+  status: 'DONE',
   owner: userTwoId,
+  location: {
+    lat: 59.2,
+    lng: -80.0,
+  },
 });
 
 const setupDatabase = async () => {

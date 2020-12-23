@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const taskSchema = new mongoose.Schema(
   {
-    summary: {
+    title: {
       type: String,
       required: true,
       maxlength: 40,
@@ -12,14 +12,25 @@ const taskSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    completed: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      enum: ['OPEN', 'IN PROGRESS', 'DONE'],
+      default: 'OPEN',
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'User',
+    },
+    location: {
+      lat: {
+        type: Number,
+        required: true,
+      },
+      lng: {
+        type: Number,
+        required: true,
+      },
     },
   },
   {
