@@ -42,7 +42,7 @@ export default class login extends Component {
       if (res.status === 200) {
         window.localStorage.setItem('token', res.data.token);
         console.log(window.localStorage.getItem('token'));
-        //window.location = '/';
+        window.location = '/';
       } else {
         this.setState({
           error: 'An unexpected error occurred. Please try again.',

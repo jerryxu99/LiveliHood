@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import GoogleMap from './google-map';
+import Error from './error';
 
 export default class createTask extends Component {
   constructor(props) {
@@ -6,21 +9,16 @@ export default class createTask extends Component {
 
     this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
+    this._onClick = this._onClick.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
       title: '',
       description: '',
       owner: '',
-      token: '',
+      location: {},
+      error: '',
     };
-  }
-
-  componentDidMount() {
-    this.setState({
-      token:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRkM2RlNTM0Y2QyMjNhZWU1YmY0NTgiLCJpYXQiOjE2MDgzMzQ4MzF9.0qkTYRaXSseWRhuamI6QSW0E6XKeTEzHJs4he9dhXPM',
-    });
   }
 
   onChangeTitle(e) {
@@ -35,23 +33,66 @@ export default class createTask extends Component {
     });
   }
 
-  onSubmit(e) {
+  _onClick({ lat, lng }) {
+    this.setState({
+      location: {
+        lat,
+        lng,
+      },
+    });
+  }
+
+  async onSubmit(e) {
     e.preventDefault();
 
     const task = {
       title: this.state.title,
       description: this.state.description,
+      location: {
+        lat: this.state.location.lat,
+        lng: this.state.location.lng,
+      },
     };
-
     console.log(task);
 
-    window.location = '/';
+    const token = `Bearer ${window.localStorage.getItem('token')}`;
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    try {
+      const res = await axios.post('http://localhost:5000/tasks', task, config);
+      console.log(res);
+      window.location = '/';
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        this.setState({
+          error: 'Please register/login',
+        });
+      } else if (!this.state.location.lat) {
+        this.setState({
+          error: 'Please choose a location on the map',
+        });
+      } else if (error.response.status === 400) {
+        this.setState({
+          error: 'Invalid title/description',
+        });
+      } else {
+        this.setState({
+          error: 'An unexpected error occurred. Please try again.',
+        });
+      }
+    }
   }
 
   render() {
     return (
       <div>
         <h3>Create New Task</h3>
+        <Error error={this.state.error} />
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Title: </label>
@@ -72,6 +113,17 @@ export default class createTask extends Component {
               value={this.state.description}
               onChange={this.onChangeDescription}
             />
+          </div>
+          <div className="form-group">
+            <label>Location: </label>
+            <div style={{ height: '50vh', width: '100%', paddingBottom: '16' }}>
+              <GoogleMap onClick={this._onClick} />
+            </div>
+            <span>
+              {this.state.location.lat
+                ? `(${this.state.location.lat}, ${this.state.location.lng})`
+                : '(Please click a location on the map)'}
+            </span>
           </div>
           <div className="form-group">
             <input

@@ -79,14 +79,6 @@ class Tasks extends Component {
     };
   }
 
-  static defaultProps = {
-    center: {
-      lat: 49.2,
-      lng: -123,
-    },
-    zoom: 11,
-  };
-
   componentDidMount() {
     axios.get('http://localhost:5000/tasks').then((res) => {
       this.setState({
@@ -102,9 +94,6 @@ class Tasks extends Component {
     return (
       <div style={{ height: '87vh', width: '100%' }}>
         <GoogleMap
-          // bootstrapURLKeys={{ key: process.env.API_KEY }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
           yesIWantToUseGoogleMapApiInternals
           onGoogleApiLoaded={({ map, maps }) =>
             handleApiLoaded(map, maps, tasks)

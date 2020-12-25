@@ -13,7 +13,7 @@ const GoogleMap = ({ children, ...props }) => (
     <GoogleMapReact
       bootstrapURLKeys={
         {
-          //key: process.env.REACT_APP_MAP_KEY, // dev only mode
+          //key: process.env.API_KEY, // dev only mode
         }
       }
       {...props}
@@ -32,6 +32,11 @@ GoogleMap.propTypes = {
 
 GoogleMap.defaultProps = {
   children: null,
+  center: {
+    lat: 49.2,
+    lng: -123,
+  },
+  zoom: 11,
 };
 
 export default GoogleMap;
