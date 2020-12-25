@@ -5,3 +5,4 @@
 - Edit task interface
 - Logout
 - LogoutAll
+- Fix bug that markers do not load without page refresh
