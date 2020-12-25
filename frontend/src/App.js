@@ -2,12 +2,12 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Navbar from './components/navbar.component';
-import Tasks from './components/tasks.component';
-import TasksList from './components/tasks-list.component';
-import CreateTask from './components/create-task.component';
-import Login from './components/login.component';
-import Register from './components/register.component';
+import Navbar from './components/navbar';
+import Tasks from './components/tasks';
+import TasksList from './components/tasks-list';
+import CreateTask from './components/create-task';
+import Login from './components/login';
+import Register from './components/register';
 
 function App() {
   return (

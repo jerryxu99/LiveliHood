@@ -1,25 +1,20 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import Error from './error';
 
 export default class login extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangeName = this.onChangeName.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      name: '',
       email: '',
       password: '',
+      error: '',
     };
-  }
-
-  onChangeName(e) {
-    this.setState({
-      name: e.target.value,
-    });
   }
 
   onChangeEmail(e) {
@@ -34,31 +29,39 @@ export default class login extends Component {
     });
   }
 
-  onSubmit() {
-    const user = {
-      name: this.state.sName,
-      email: this.state.sEmail,
-      password: this.state.sPassword,
-    };
+  async onSubmit(e) {
+    e.preventDefault();
 
-    console.log(user);
+    const user = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+    try {
+      const res = await axios.post('http://localhost:5000/users/login', user);
+      console.log(res);
+      if (res.status === 200) {
+        window.localStorage.setItem('token', res.data.token);
+        console.log(window.localStorage.getItem('token'));
+        //window.location = '/';
+      } else {
+        this.setState({
+          error: 'An unexpected error occurred. Please try again.',
+        });
+      }
+    } catch (error) {
+      console.log(error.response);
+      this.setState({
+        error: 'Invalid email/password',
+      });
+    }
   }
 
   render() {
     return (
       <div>
-        <h3>Sign up</h3>
+        <h3>Login</h3>
+        <Error error={this.state.error} />
         <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label>Name: </label>
-            <input
-              type="text"
-              required
-              className="form-control"
-              value={this.state.name}
-              onChange={this.onChangeName}
-            />
-          </div>
           <div className="form-group">
             <label>Email: </label>
             <input
@@ -80,7 +83,7 @@ export default class login extends Component {
             />
           </div>
           <div className="form-group">
-            <input type="submit" value="Sign Up" className="btn btn-primary" />
+            <input type="submit" value="Login" className="btn btn-primary" />
           </div>
         </form>
       </div>
