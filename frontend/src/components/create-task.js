@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import GoogleMap from './google-map';
 import Error from './error';
+import CustomMarker from './customMarker';
 
 export default class createTask extends Component {
   constructor(props) {
@@ -117,7 +118,12 @@ export default class createTask extends Component {
           <div className="form-group">
             <label>Location: </label>
             <div style={{ height: '50vh', width: '100%', paddingBottom: '16' }}>
-              <GoogleMap onClick={this._onClick} />
+              <GoogleMap onClick={this._onClick}>
+                <CustomMarker
+                  lat={this.state.location.lat}
+                  lng={this.state.location.lng}
+                />
+              </GoogleMap>
             </div>
             <span>
               {this.state.location.lat
