@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import qs from 'qs';
 import NewTask from './newTask';
+import Error from './error';
 
 const Task = (props) => (
   <tr>
@@ -45,8 +46,9 @@ export default class tasksList extends Component {
       });
       console.log(this.state.myTasks);
     } catch (e) {
-      const error = e.response;
-      console.log(error);
+      this.setState({
+        error: 'Please Sign Up/Login',
+      });
     }
 
     try {
@@ -95,6 +97,7 @@ export default class tasksList extends Component {
           </thead>
           <tbody>{this.getTaskList(this.state.myTasks)}</tbody>
         </table>
+        <Error error={this.state.error} />
         <h3>My Todo</h3>
         <table className="table">
           <thead className="thead-light">
@@ -109,6 +112,7 @@ export default class tasksList extends Component {
             {this.getTaskList(this.state.todo)}
           </tbody>
         </table>
+        <Error error={this.state.error} />
       </div>
     );
   }

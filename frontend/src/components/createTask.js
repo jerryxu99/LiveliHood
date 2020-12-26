@@ -71,11 +71,11 @@ export default class createTask extends Component {
       console.log(error.response);
       if (error.response.status === 401) {
         this.setState({
-          error: 'Please register/login',
+          error: 'Please Sign Up/Login',
         });
       } else if (!this.state.location.lat) {
         this.setState({
-          error: 'Please choose a location on the map',
+          error: 'Please click a location on the map',
         });
       } else if (error.response.status === 400) {
         this.setState({
