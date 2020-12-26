@@ -44,6 +44,13 @@ userSchema.virtual('tasks', {
   foreignField: 'owner',
 });
 
+// Used to populate tasks assigned to user
+userSchema.virtual('todo', {
+  ref: 'Task',
+  localField: '_id',
+  foreignField: 'taskDoer',
+});
+
 // generate auth token
 userSchema.methods.generateAuthToken = async function () {
   const user = this;

@@ -83,6 +83,38 @@ router.get('/tasks/me', auth, async (req, res) => {
   }
 });
 
+// get your tasks that have been assigned to you
+router.get('/tasks/todo', auth, async (req, res) => {
+  const match = {};
+  const sort = {};
+
+  if (req.query.status) {
+    match.status = req.query.status;
+  }
+
+  if (req.query.sortBy) {
+    const parts = req.query.sortBy.split('_');
+    sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
+  }
+
+  try {
+    await req.user
+      .populate({
+        path: 'todo',
+        match,
+        options: {
+          limit: parseInt(req.query.limit, 10),
+          skip: parseInt(req.query.skip, 10),
+          sort,
+        },
+      })
+      .execPopulate();
+    res.send(req.user.todo);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
 // read task by id
 router.get('/tasks/:id', async (req, res) => {
   try {
@@ -98,7 +130,7 @@ router.get('/tasks/:id', async (req, res) => {
 
 // update your tasks
 router.patch('/tasks/:id', auth, async (req, res) => {
-  const allowedUpdates = ['title', 'description', 'status'];
+  const allowedUpdates = ['title', 'description', 'status', 'taskDoer'];
   const updates = Object.keys(req.body);
   const isValid = updates.every((update) => allowedUpdates.includes(update));
 
@@ -120,6 +152,31 @@ router.patch('/tasks/:id', auth, async (req, res) => {
 
     await task.save();
 
+    res.send(task);
+  } catch (e) {
+    res.status(400).send();
+  }
+});
+
+// assign yourself to a task
+router.patch('/tasks/assign/:id', auth, async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+
+    if (!task) {
+      return res.status(404).send();
+    }
+
+    if (task.status !== 'OPEN') {
+      return res
+        .status(400)
+        .send({ error: 'You can only assign yourself to OPEN tasks' });
+    }
+
+    task.status = 'IN PROGRESS';
+    task.taskDoer = req.user._id;
+
+    await task.save();
     res.send(task);
   } catch (e) {
     res.status(400).send();

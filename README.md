@@ -6,3 +6,4 @@
 - Logout
 - LogoutAll
 - Fix bug that markers do not load without page refresh
+- add tests for /tasks/assign/:id
