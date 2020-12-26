@@ -141,3 +141,22 @@ test('Should not update other users task', async () => {
     })
     .expect(404);
 });
+
+test('Should assign user to open task', async () => {
+  await request(app)
+    .patch(`/tasks/assign/${taskOne._id}`)
+    .set('Authorization', `Bearer ${userTwo.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  const task = await Task.findById(taskOne._id);
+  expect(task.taskDoer).not.toBeNull();
+});
+
+test('Should not assign user to non open task', async () => {
+  await request(app)
+    .patch(`/tasks/assign/${taskThree._id}`)
+    .set('Authorization', `Bearer ${userTwo.tokens[0].token}`)
+    .send()
+    .expect(400);
+});
