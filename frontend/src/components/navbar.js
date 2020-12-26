@@ -1,8 +1,42 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Logout from './logout';
+import axios from 'axios';
 
 export default class Navbar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      authenticated: false,
+    };
+  }
+
+  async componentDidMount() {
+    const token = `Bearer ${window.localStorage.getItem('token')}`;
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    try {
+      const res = await axios.get('http://localhost:5000/auth', config);
+
+      if (res.status === 200) {
+        this.setState({
+          authenticated: true,
+        });
+      }
+    } catch (e) {
+      this.setState({
+        authenticated: false,
+      });
+    }
+  }
+
   render() {
+    console.log(this.state.authenticated);
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
         <Link
@@ -40,20 +74,26 @@ export default class Navbar extends Component {
               </Link>
             </li>
           </ul>
-          <ul className="navbar-nav navbar-right">
-            <li className="navbar-item">
-              <Link to="/register" className="nav-link">
-                Sign Up
-              </Link>
-            </li>
-          </ul>
-          <ul className="navbar-nav navbar-right">
-            <li className="navbar-item">
-              <Link to="/login" className="nav-link">
-                Login
-              </Link>
-            </li>
-          </ul>
+          {this.state.authenticated ? (
+            <Logout />
+          ) : (
+            <>
+              <ul className="navbar-nav navbar-right">
+                <li className="navbar-item">
+                  <Link to="/register" className="nav-link">
+                    Sign Up
+                  </Link>
+                </li>
+              </ul>
+              <ul className="navbar-nav navbar-right">
+                <li className="navbar-item">
+                  <Link to="/login" className="nav-link">
+                    Login
+                  </Link>
+                </li>
+              </ul>{' '}
+            </>
+          )}
         </div>
       </nav>
     );

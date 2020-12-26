@@ -4,6 +4,11 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
+// Check if authenticated
+router.get('/auth', auth, async (req, res) => {
+  res.status(200).send();
+});
+
 // create a new user
 router.post('/users', async (req, res) => {
   const user = new User(req.body);
@@ -28,6 +33,32 @@ router.post('/users/login', async (req, res) => {
     res.status(200).send({ user, token });
   } catch (e) {
     res.status(400).send({ error: 'Unable to Login' });
+  }
+});
+
+// logout (rm current token)
+router.post('/users/logout', auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(
+      (token) => token.token !== req.token,
+    );
+    await req.user.save();
+
+    res.send();
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+// logout (rm all tokens)
+router.post('/users/logoutAll', auth, async (req, res) => {
+  try {
+    req.user.tokens = [];
+    await req.user.save();
+
+    res.send();
+  } catch (e) {
+    res.status(500).send();
   }
 });
 

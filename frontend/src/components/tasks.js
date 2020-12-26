@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import GoogleMap from './google-map';
+import GoogleMap from './googleMap';
 
 const getInfoWindow = async (task) => {
   let ownerName = '';

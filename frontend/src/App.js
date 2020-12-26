@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navbar from './components/navbar';
 import Tasks from './components/tasks';
-import TasksList from './components/tasks-list';
-import CreateTask from './components/create-task';
+import TasksList from './components/tasksList';
+import CreateTask from './components/createTask';
 import Login from './components/login';
 import Register from './components/register';
 
