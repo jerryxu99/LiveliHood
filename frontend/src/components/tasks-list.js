@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import qs from 'qs';
+import NewTask from './newTask';
 
 const Task = (props) => (
   <tr>
@@ -20,6 +22,7 @@ export default class tasksList extends Component {
 
     this.state = {
       myTasks: [],
+      todo: [],
       error: '',
     };
   }
@@ -33,11 +36,28 @@ export default class tasksList extends Component {
     };
 
     try {
-      const res = await axios.get('http://localhost:5000/tasks/me', config);
+      const res = await axios.get(
+        'http://localhost:5000/tasks/me?sortBy=createdAt_desc',
+        config,
+      );
       this.setState({
         myTasks: res.data,
       });
       console.log(this.state.myTasks);
+    } catch (e) {
+      const error = e.response;
+      console.log(error);
+    }
+
+    try {
+      const res = await axios.get(
+        'http://localhost:5000/tasks/todo?sortBy=createdAt_asc',
+        config,
+      );
+      this.setState({
+        todo: res.data,
+      });
+      console.log(this.state.todo);
     } catch (e) {
       const error = e.response;
       console.log(error);
@@ -55,6 +75,13 @@ export default class tasksList extends Component {
   }
 
   render() {
+    let id;
+    if (window.location.search) {
+      id = qs.parse(window.location.search, {
+        ignoreQueryPrefix: true,
+      }).id;
+    }
+    console.log(id);
     return (
       <div>
         <h3>My Tasks</h3>
@@ -77,7 +104,10 @@ export default class tasksList extends Component {
               <th>Status</th>
             </tr>
           </thead>
-          <tbody>{this.getTaskList([])}</tbody>
+          <tbody>
+            {id && <NewTask id={id} />}
+            {this.getTaskList(this.state.todo)}
+          </tbody>
         </table>
       </div>
     );

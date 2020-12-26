@@ -10,7 +10,9 @@ const getInfoWindow = async (task) => {
   } catch (e) {
     console.log(e);
   }
-  return `<div>
+
+  return `
+    <div>
       <div style="font-size: 16px;">${task.title}</div>
       <div style="font-size: 14px;">
         <span style="color: grey;">${task.description}</span>
@@ -23,6 +25,13 @@ const getInfoWindow = async (task) => {
       };">
         <span>
           ${task.status}
+          ${
+            task.status === 'OPEN'
+              ? `<button onclick="window.location = '/tasks?id=${task._id}'" style="float: right; border: 1px solid green; border-radius: 2px; padding: 1px; background-color: white; color: green; font: inherit">` +
+                'Do Task' +
+                '</button>'
+              : ''
+          }
         </span>
       </div>
     </div>`;

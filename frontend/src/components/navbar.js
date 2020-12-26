@@ -5,13 +5,27 @@ export default class Navbar extends Component {
   render() {
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <Link to="/" className="navbar-brand">
+        <Link
+          to="/"
+          className="navbar-brand"
+          // need to manually set window location to load in markers
+          onClick={() => {
+            window.location = '/';
+          }}
+        >
           LiveliHood
         </Link>
         <div className="collpase navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <li className="navbar-item">
-              <Link to="/" className="nav-link">
+              <Link
+                to="/"
+                className="nav-link"
+                // need to manually set window location to load in markers
+                onClick={() => {
+                  window.location = '/';
+                }}
+              >
                 Tasks
               </Link>
             </li>
