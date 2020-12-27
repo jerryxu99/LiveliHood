@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import axios from 'axios';
 
-export default class NewTask extends Component {
+export default class PendingTask extends Component {
   constructor(props) {
     super(props);
 
@@ -10,15 +10,12 @@ export default class NewTask extends Component {
     this.state = {
       title: '',
       description: '',
+      status: '',
     };
   }
 
   componentDidMount() {
-    const task = this.getTask(this.props.id);
-    this.setState({
-      title: task.title,
-      description: task.description,
-    });
+    this.getTask(this.props.id);
   }
 
   getTask = async () => {
@@ -30,12 +27,14 @@ export default class NewTask extends Component {
       this.setState({
         title: res.data.title,
         description: res.data.description,
+        status: 'PENDING',
       });
     } catch (e) {
       console.log(e.response);
       this.setState({
         title: 'Unexpected Error:',
         description: 'Please Try Again.',
+        status: '',
       });
     }
   };
@@ -61,14 +60,15 @@ export default class NewTask extends Component {
 
   render() {
     return (
-      <tr>
+      <tr style={{ color: 'green' }}>
         <td>{this.state.title}</td>
         <td>{this.state.description}</td>
+        <td>{this.state.status}</td>
         <td>
           <a href="/tasks" style={{ color: 'green' }} onClick={this.accept}>
             ACCEPT
           </a>
-          /
+          |
           <a href="/tasks" style={{ color: '#ff4c00' }}>
             DECLINE
           </a>

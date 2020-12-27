@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import qs from 'qs';
-import NewTask from './newTask';
+import PendingTask from './pendingTask';
 import Error from './error';
 
 const Task = (props) => (
@@ -10,6 +11,45 @@ const Task = (props) => (
     <td>{props.task.description}</td>
     <td style={{ color: props.task.status === 'OPEN' ? 'green' : 'orange' }}>
       {props.task.status}
+    </td>
+    <td>
+      {props.deleteTask && (
+        <span>
+          {props.task.status === 'OPEN' && (
+            <>
+              <Link to={`/tasks/edit/${props.task._id}`}>edit</Link>|
+            </>
+          )}
+          {props.task.status === 'IN PROGRESS' && (
+            <>
+              <a
+                href="/tasks"
+                onClick={() => props.markDone(props.task._id)}
+                style={{ color: 'green' }}
+              >
+                mark done
+              </a>
+              |
+            </>
+          )}
+          <a
+            href="/tasks"
+            onClick={() => props.deleteTask(props.task._id)}
+            style={{ color: 'orange' }}
+          >
+            delete
+          </a>
+        </span>
+      )}
+      {props.dropTask && (
+        <a
+          href="/tasks"
+          onClick={() => props.dropTask(props.task._id)}
+          style={{ color: 'orange' }}
+        >
+          remove
+        </a>
+      )}
     </td>
   </tr>
 );
@@ -66,13 +106,75 @@ export default class tasksList extends Component {
     }
   }
 
-  deleteTask(id) {
-    console.log('delete placeholder');
+  async deleteTask(id) {
+    const token = `Bearer ${window.localStorage.getItem('token')}`;
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    try {
+      await axios.delete(`http://localhost:5000/tasks/${id}`, config);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
-  getTaskList(tasks) {
+  async markDone(id) {
+    const token = `Bearer ${window.localStorage.getItem('token')}`;
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    try {
+      await axios.patch(
+        `http://localhost:5000/tasks/${id}`,
+        {
+          status: 'DONE',
+        },
+        config,
+      );
+    } catch (e) {
+      console.log(e);
+      this.setState({
+        error: 'An unexpected error has occurred. Please try again',
+      });
+    }
+  }
+
+  async dropTask(id) {
+    const token = `Bearer ${window.localStorage.getItem('token')}`;
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    try {
+      await axios.patch(`http://localhost:5000/tasks/drop/${id}`, {}, config);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  getTaskList(tasks, type) {
+    if (type === 'tasks') {
+      return tasks.map((task) => {
+        return (
+          <Task
+            task={task}
+            deleteTask={this.deleteTask}
+            markDone={this.markDone}
+          />
+        );
+      });
+    }
+
     return tasks.map((task) => {
-      return <Task task={task} />;
+      return <Task task={task} dropTask={this.dropTask} />;
     });
   }
 
@@ -93,9 +195,10 @@ export default class tasksList extends Component {
               <th>Title</th>
               <th>Description</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
-          <tbody>{this.getTaskList(this.state.myTasks)}</tbody>
+          <tbody>{this.getTaskList(this.state.myTasks, 'tasks')}</tbody>
         </table>
         <Error error={this.state.error} />
         <h3>My Todo</h3>
@@ -105,11 +208,12 @@ export default class tasksList extends Component {
               <th>Title</th>
               <th>Description</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {id && <NewTask id={id} />}
-            {this.getTaskList(this.state.todo)}
+            {!this.state.error && id && <PendingTask id={id} />}
+            {this.getTaskList(this.state.todo, 'todo')}
           </tbody>
         </table>
         <Error error={this.state.error} />

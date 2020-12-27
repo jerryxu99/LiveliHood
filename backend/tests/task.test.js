@@ -160,3 +160,39 @@ test('Should not assign user to non open task', async () => {
     .send()
     .expect(400);
 });
+
+test('Should drop a task', async () => {
+  await request(app)
+    .patch(`/tasks/assign/${taskOne._id}`)
+    .set('Authorization', `Bearer ${userTwo.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  await request(app)
+    .patch(`/tasks/drop/${taskOne._id}`)
+    .set('Authorization', `Bearer ${userTwo.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  const task = await Task.findById(taskOne._id);
+  expect(task.taskDoer).toBeNull;
+  expect(task.status).toEqual('OPEN');
+});
+
+test('Should not drop a task you are not taskDoer of', async () => {
+  await request(app)
+    .patch(`/tasks/assign/${taskOne._id}`)
+    .set('Authorization', `Bearer ${userTwo.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  await request(app)
+    .patch(`/tasks/drop/${taskOne._id}`)
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .send()
+    .expect(400);
+
+  const task = await Task.findById(taskOne._id);
+  expect(task.taskDoer).not.toBeNull;
+  expect(task.status).not.toEqual('OPEN');
+});

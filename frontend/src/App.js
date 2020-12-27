@@ -6,6 +6,7 @@ import Navbar from './components/navbar';
 import Tasks from './components/tasks';
 import TasksList from './components/tasksList';
 import CreateTask from './components/createTask';
+import EditTask from './components/editTask.js';
 import Login from './components/login';
 import Register from './components/register';
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" exact component={Tasks} />
         <Route path="/tasks" exact component={TasksList} />
         <Route path="/tasks/create" component={CreateTask} />
+        <Route path="/tasks/edit/:id" component={EditTask} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
       </div>

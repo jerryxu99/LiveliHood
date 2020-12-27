@@ -130,7 +130,13 @@ router.get('/tasks/:id', async (req, res) => {
 
 // update your tasks
 router.patch('/tasks/:id', auth, async (req, res) => {
-  const allowedUpdates = ['title', 'description', 'status', 'taskDoer'];
+  const allowedUpdates = [
+    'title',
+    'description',
+    'location',
+    'status',
+    'taskDoer',
+  ];
   const updates = Object.keys(req.body);
   const isValid = updates.every((update) => allowedUpdates.includes(update));
 
@@ -175,6 +181,34 @@ router.patch('/tasks/assign/:id', auth, async (req, res) => {
 
     task.status = 'IN PROGRESS';
     task.taskDoer = req.user._id;
+
+    await task.save();
+    res.send(task);
+  } catch (e) {
+    res.status(400).send();
+  }
+});
+
+// drop a task you're assigned to
+router.patch('/tasks/drop/:id', auth, async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+
+    if (!task) {
+      return res.status(404).send();
+    }
+
+    if (
+      task.taskDoer.toString() !== req.user._id.toString() ||
+      task.status !== 'IN PROGRESS'
+    ) {
+      return res.status(400).send({
+        error: 'You can only drop an in progress task you are assigned to',
+      });
+    }
+
+    task.status = 'OPEN';
+    task.taskDoer = null;
 
     await task.save();
     res.send(task);

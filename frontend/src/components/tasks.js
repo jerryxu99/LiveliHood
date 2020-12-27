@@ -71,9 +71,11 @@ const handleApiLoaded = async (map, maps, tasks) => {
   const infoWindows = [];
 
   for (const task of tasks) {
-    const infoWindow = await getInfoWindow(task);
-    updateMarkers(map, maps, markers, task);
-    updateInfoWindows(maps, infoWindows, infoWindow);
+    if (task.status !== 'DONE') {
+      const infoWindow = await getInfoWindow(task);
+      updateMarkers(map, maps, markers, task);
+      updateInfoWindows(maps, infoWindows, infoWindow);
+    }
   }
 
   assignMarkers(map, markers, infoWindows);
@@ -88,13 +90,16 @@ class Tasks extends Component {
     };
   }
 
-  componentDidMount() {
-    axios.get('http://localhost:5000/tasks').then((res) => {
+  async componentDidMount() {
+    try {
+      const res = await axios.get('http://localhost:5000/tasks');
       this.setState({
         tasks: res.data,
       });
       console.log(this.state.tasks);
-    });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   render() {

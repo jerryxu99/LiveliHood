@@ -36,7 +36,6 @@ export default class Navbar extends Component {
   }
 
   render() {
-    console.log(this.state.authenticated);
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
         <Link
