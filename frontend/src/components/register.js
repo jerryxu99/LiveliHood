@@ -76,6 +76,7 @@ export default class login extends Component {
             <input
               type="text"
               required
+              autoComplete="new-password"
               className="form-control"
               value={this.state.name}
               onChange={this.onChangeName}
@@ -86,6 +87,7 @@ export default class login extends Component {
             <input
               type="text"
               required
+              autoComplete="new-password"
               className="form-control"
               value={this.state.email}
               onChange={this.onChangeEmail}
@@ -96,6 +98,7 @@ export default class login extends Component {
             <input
               type="text"
               required
+              autoComplete="new-password"
               className="form-control"
               value={this.state.password}
               onChange={this.onChangePassword}
