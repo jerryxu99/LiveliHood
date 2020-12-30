@@ -20,9 +20,6 @@ Routes for the backend can be found in the backend folder's README
 
 ### TODO
 
-- Delete task button
-- Edit task interface
-- Mark task as done
 - Sort tasks by status frontend
 - More ways to sort tasks on the frontend
 - Change logout/logoutall to a dropdown
