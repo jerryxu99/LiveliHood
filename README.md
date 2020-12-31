@@ -22,7 +22,8 @@ Routes for the backend can be found in the backend folder's README
 
 #### Not signed in:
 
-![Not signed in example](gifs/notSignedIn.gif)
+![Not signed in example](gifs/notSignedIn.gif) \
+note: The popup on each map is due to the map being in development mode, as the Google Maps API is a paid API.
 
 #### Signed in:
 
