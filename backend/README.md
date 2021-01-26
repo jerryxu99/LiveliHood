@@ -1,11 +1,9 @@
-# task-manager
+# backend
 
 An API that allows users to login and manage individual tasks dynamically stored in a database with authentication, created using Node, Express, and MongoDB.
 Tests created using Jest and supertest.
 
 Tools: Mongoose, JWT, bcrypt, validator, Jest, supertest
-
-Task manager API deployed at https://jxu-task-app.herokuapp.com/
 
 ## Routes:
 
@@ -21,8 +19,6 @@ Task manager API deployed at https://jxu-task-app.herokuapp.com/
 - `POST /tasks `\
   Create a task bound to logged in user. \
   Sample data: `{ "description": "go shopping", "status": "OPEN" }`
-- `POST /users/me/avatar `\
-  Upload avatar through form-data
 - `GET /users/me`
 - `GET /tasks `\
   With pagination, filtering, sorting. eg. \
@@ -40,4 +36,3 @@ Task manager API deployed at https://jxu-task-app.herokuapp.com/
 - `PATCH /tasks/:id`
 - `DELETE /users/me`
 - `DELETE /tasks/:id`
-- `DELETE /users/me/avatar`
