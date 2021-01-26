@@ -10,12 +10,16 @@ const taskRouter = require('./routers/task');
 const app = express();
 const server = http.createServer(app);
 
-const publicDirectoryPath = path.join(__dirname, '../public');
+const publicDirectoryPath = path.join(__dirname, '../../frontend/build');
 
 app.use(express.static(publicDirectoryPath));
 app.use(express.json());
 app.use(cors());
-app.use(userRouter);
-app.use(taskRouter);
+app.use('/api', userRouter);
+app.use('/api', taskRouter);
+
+app.get('*', (req, res) => {
+  res.sendFile(publicDirectoryPath);
+});
 
 module.exports = server;

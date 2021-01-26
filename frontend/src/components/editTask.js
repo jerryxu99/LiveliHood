@@ -24,9 +24,7 @@ export default class EditTask extends Component {
 
   async componentDidMount() {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/tasks/${this.props.match.params.id}`,
-      );
+      const res = await axios.get(`/api/tasks/${this.props.match.params.id}`);
       const { title, description, owner, location } = res.data;
 
       this.setState({
@@ -86,7 +84,7 @@ export default class EditTask extends Component {
 
     try {
       const res = await axios.patch(
-        `http://localhost:5000/tasks/${this.props.match.params.id}`,
+        `/api/tasks/${this.props.match.params.id}`,
         task,
         config,
       );

@@ -37,7 +37,7 @@ export default class login extends Component {
       password: this.state.password,
     };
     try {
-      const res = await axios.post('http://localhost:5000/users/login', user);
+      const res = await axios.post('/api/users/login', user);
       console.log(res);
       if (res.status === 200) {
         window.localStorage.setItem('token', res.data.token);

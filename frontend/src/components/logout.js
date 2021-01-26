@@ -12,7 +12,7 @@ export default class Logout extends Component {
     };
 
     try {
-      await axios.post(`http://localhost:5000/users/logout${all}`, {}, config);
+      await axios.post(`/api/users/logout${all}`, {}, config);
     } catch (e) {
       console.log(e);
     }
@@ -26,7 +26,8 @@ export default class Logout extends Component {
             <Link
               to="/"
               className="nav-link"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 this.logout('');
                 window.location = '/';
               }}
@@ -40,7 +41,8 @@ export default class Logout extends Component {
             <Link
               to="/"
               className="nav-link"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 this.logout('All');
                 window.location = '/';
               }}

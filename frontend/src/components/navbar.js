@@ -21,7 +21,7 @@ export default class Navbar extends Component {
     };
 
     try {
-      const res = await axios.get('http://localhost:5000/auth', config);
+      const res = await axios.get('/api/auth', config);
 
       if (res.status === 200) {
         this.setState({

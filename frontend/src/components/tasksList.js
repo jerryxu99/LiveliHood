@@ -78,7 +78,7 @@ export default class tasksList extends Component {
 
     try {
       const res = await axios.get(
-        'http://localhost:5000/tasks/me?sortBy=createdAt_desc',
+        '/api/tasks/me?sortBy=createdAt_desc',
         config,
       );
       this.setState({
@@ -93,7 +93,7 @@ export default class tasksList extends Component {
 
     try {
       const res = await axios.get(
-        'http://localhost:5000/tasks/todo?sortBy=createdAt_asc',
+        '/api/tasks/todo?sortBy=createdAt_asc',
         config,
       );
       this.setState({
@@ -115,7 +115,7 @@ export default class tasksList extends Component {
     };
 
     try {
-      await axios.delete(`http://localhost:5000/tasks/${id}`, config);
+      await axios.delete(`/api/tasks/${id}`, config);
     } catch (e) {
       console.log(e);
     }
@@ -131,7 +131,7 @@ export default class tasksList extends Component {
 
     try {
       await axios.patch(
-        `http://localhost:5000/tasks/${id}`,
+        `/api/tasks/${id}`,
         {
           status: 'DONE',
         },
@@ -154,7 +154,7 @@ export default class tasksList extends Component {
     };
 
     try {
-      await axios.patch(`http://localhost:5000/tasks/drop/${id}`, {}, config);
+      await axios.patch(`/api/tasks/drop/${id}`, {}, config);
     } catch (e) {
       console.log(e);
     }

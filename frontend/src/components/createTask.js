@@ -64,7 +64,7 @@ export default class createTask extends Component {
     };
 
     try {
-      const res = await axios.post('http://localhost:5000/tasks', task, config);
+      const res = await axios.post('/api/tasks', task, config);
       console.log(res);
       window.location = '/';
     } catch (error) {

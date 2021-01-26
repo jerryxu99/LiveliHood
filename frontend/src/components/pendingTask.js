@@ -20,9 +20,7 @@ export default class PendingTask extends Component {
 
   getTask = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/tasks/${this.props.id}`,
-      );
+      const res = await axios.get(`/api/tasks/${this.props.id}`);
       console.log(res.data);
       this.setState({
         title: res.data.title,
@@ -48,11 +46,7 @@ export default class PendingTask extends Component {
     };
 
     try {
-      await axios.patch(
-        `http://localhost:5000/tasks/assign/${this.props.id}`,
-        {},
-        config,
-      );
+      await axios.patch(`/api/tasks/assign/${this.props.id}`, {}, config);
     } catch (e) {
       console.log(e.response);
     }

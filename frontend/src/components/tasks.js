@@ -5,7 +5,7 @@ import GoogleMap from './googleMap';
 const getInfoWindow = async (task) => {
   let ownerName = '';
   try {
-    const res = await axios.get(`http://localhost:5000/users/${task.owner}`);
+    const res = await axios.get(`/api/users/${task.owner}`);
     ownerName = res.data.name;
   } catch (e) {
     console.log(e);
@@ -92,7 +92,7 @@ class Tasks extends Component {
 
   async componentDidMount() {
     try {
-      const res = await axios.get('http://localhost:5000/tasks');
+      const res = await axios.get('/api/tasks');
       this.setState({
         tasks: res.data,
       });
