@@ -18,8 +18,8 @@ app.use(cors());
 app.use('/api', userRouter);
 app.use('/api', taskRouter);
 
-app.get('*', (req, res) => {
-  res.sendFile(publicDirectoryPath);
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../frontend/build/index.html'));
 });
 
 module.exports = server;
