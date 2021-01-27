@@ -1,6 +1,10 @@
 # LiveliHood
 
-LiveliHood is a web app designed to help those who are more vulnerable to COVID-19 complete daily tasks, such as shopping at a populated grocery store. This web app allows kind-hearted users to visualize tasks in their neighbourhood on a map and volunteer to help complete them.
+LiveliHood is a web app designed to help those who are more vulnerable to COVID-19 complete daily tasks, such as shopping at a populated grocery store. This web app allows kind-hearted users to visualize tasks in their neighbourhood on a map and volunteer to help complete them. \
+
+Deployed at https://livelihood-app.herokuapp.com/. \
+**note:** if using Chrome, likely you will have to disable caching or the map won't always update. /
+Right click -> Inspect -> Network -> Disable cache. Dev tools will need to be on the entire duration to keep caching disabled.
 
 ### Stack
 
