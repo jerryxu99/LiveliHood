@@ -1,0 +1,20 @@
+{
+  "name": "livelihood",
+  "version": "1.0.0",
+  "description": "LiveliHood is a web app designed to help those who are more vulnerable to COVID-19 complete daily tasks, such as shopping at a populated grocery store. This web app allows kind-hearted users to visualize tasks in their neighbourhood on a map and volunteer to help complete them.",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd backend && npm install && node src/index.js",
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerryxu99/Neighbour.ly.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jerryxu99/Neighbour.ly/issues"
+  },
+  "homepage": "https://github.com/jerryxu99/Neighbour.ly#readme"
+}
